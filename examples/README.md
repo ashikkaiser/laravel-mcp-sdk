@@ -5,7 +5,7 @@ This directory contains example implementations of the Laravel MCP package, demo
 ## Prerequisites
 
 Before running the examples, make sure you have:
-1. PHP 8.1 or higher installed
+1. PHP 8.2 or higher installed
 2. Composer dependencies installed (`composer install`)
 3. Terminal access to run PHP scripts
 
@@ -112,4 +112,4 @@ All examples demonstrate:
 
 3. **Permission issues with file reading**
    - Ensure PHP has read permissions for the files
-   - Use absolute paths or relative paths from the script location 
+   - Use absolute paths or relative paths from the script location

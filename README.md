@@ -7,8 +7,8 @@ A Laravel package for implementing the Model Context Protocol (MCP) in Laravel a
 ## Requirements
 
 ### System Requirements
-- PHP 8.1 or higher
-- Laravel 10.x
+- PHP 8.2 or higher
+- Laravel 10.x, 11.x, or 12.x
 - Composer 2.x
 - OpenSSL PHP Extension
 - PDO PHP Extension
@@ -241,7 +241,7 @@ $mcp->tool('calculate', [
     $num1 = $args['num1'];
     $num2 = $args['num2'];
     $operation = $args['operation'];
-    
+
     return match ($operation) {
         '+' => ['result' => $num1 + $num2],
         '-' => ['result' => $num1 - $num2],
@@ -259,14 +259,14 @@ $mcp->tool('process-data', [
     try {
         $items = $args['items'];
         $token = $args['token'] ?? uniqid();
-        
+
         foreach ($items as $index => $item) {
             // Process item
             $progress = ($index + 1) / count($items);
             MCP::sendProgress($progress, $token, count($items));
             MCP::sendLog("Processing item {$index + 1}", 'info', 'processor');
         }
-        
+
         return ['processed' => count($items)];
     } catch (\Exception $e) {
         MCP::sendLog($e->getMessage(), 'error', 'processor');
@@ -284,7 +284,7 @@ $mcp->resource('file://{path}')(function ($matches) {
     if (!$path || !file_exists($path)) {
         return ['error' => 'File not found'];
     }
-    
+
     return [
         'content' => file_get_contents($path),
         'metadata' => [
@@ -299,11 +299,11 @@ $mcp->resource('file://{path}')(function ($matches) {
 $mcp->resource('db://{table}/{id}')(function ($matches) {
     $table = $matches['table'] ?? null;
     $id = $matches['id'] ?? null;
-    
+
     if (!$table || !$id) {
         return ['error' => 'Invalid parameters'];
     }
-    
+
     try {
         $record = DB::table($table)->find($id);
         return $record ? ['data' => $record] : ['error' => 'Record not found'];
@@ -401,25 +401,25 @@ use LaravelMCP\MCP\Facades\MCP;
 try {
     // Initialize server
     $server = new MCPServer();
-    
+
     if (!$server->getTransport()) {
         throw new RuntimeException('Transport not initialized');
     }
-    
+
     // Handle tool call
     $result = $server->handleToolCall('test_tool', [
         'param1' => 'value1',
         'param2' => 'value2'
     ]);
-    
+
     // Handle resource request
     $resource = $server->handleResourceRequest('test://resource');
-    
+
     // Handle prompt request
     $prompt = $server->handlePromptRequest('test_prompt', [
         'arg1' => 'value1'
     ]);
-    
+
 } catch (RuntimeException $e) {
     MCP::sendLog("Runtime error: {$e->getMessage()}", 'error', 'server');
 } catch (\Exception $e) {
@@ -449,7 +449,7 @@ $mcp->tool('analyze-complexity', [
         'cognitive' => random_int(1, 15),
         'lines' => count(explode("\n", $args['code']))
     ];
-    
+
     return [
         'metrics' => $metrics,
         'suggestion' => $metrics['cyclomatic'] > 5 ? 'Consider breaking down this function' : 'Complexity is acceptable'
@@ -477,14 +477,14 @@ $mcp->prompt('suggest-improvements', [
             'content' => "Here's the code to review:\n\n```{$args['language']}\n{$args['code']}\n```"
         ]
     ];
-    
+
     if (isset($args['context'])) {
         $messages[] = [
             'role' => 'user',
             'content' => "Additional context: {$args['context']}"
         ];
     }
-    
+
     return $messages;
 });
 
@@ -492,12 +492,12 @@ $mcp->prompt('suggest-improvements', [
 $mcp->resource('reviews://{file_hash}')(function ($matches) {
     $hash = $matches['file_hash'] ?? null;
     if (!$hash) return ['error' => 'Invalid file hash'];
-    
+
     $reviewPath = "reviews/{$hash}.json";
     if (!Storage::exists($reviewPath)) {
         return ['error' => 'No review history found'];
     }
-    
+
     return ['history' => json_decode(Storage::get($reviewPath), true)];
 });
 
@@ -509,7 +509,7 @@ $mcp->tool('review-code', [
 ])(function ($args) use ($mcp) {
     $fileHash = md5($args['code']);
     $reviewToken = uniqid('review_');
-    
+
     try {
         // Step 1: Analyze complexity
         MCP::sendProgress(0.2, $reviewToken, "Analyzing code complexity...");
@@ -517,7 +517,7 @@ $mcp->tool('review-code', [
             'code' => $args['code'],
             'language' => $args['language']
         ]);
-        
+
         // Step 2: Get improvement suggestions
         MCP::sendProgress(0.5, $reviewToken, "Getting expert suggestions...");
         $personality = match($args['style']) {
@@ -525,13 +525,13 @@ $mcp->tool('review-code', [
             'sarcastic' => "Use witty, sarcastic humor (but stay constructive and kind).",
             default => "Be direct and professional."
         };
-        
+
         $suggestions = $mcp->prompt('suggest-improvements', [
             'code' => $args['code'],
             'language' => $args['language'],
             'context' => "Please {$personality}\nComplexity metrics: " . json_encode($complexity['metrics'])
         ]);
-        
+
         // Step 3: Store review history
         MCP::sendProgress(0.8, $reviewToken, "Saving review history...");
         Storage::put("reviews/{$fileHash}.json", json_encode([
@@ -540,10 +540,10 @@ $mcp->tool('review-code', [
             'suggestions' => $suggestions,
             'style' => $args['style']
         ]));
-        
+
         // Step 4: Format response
         MCP::sendProgress(1.0, $reviewToken, "Done!");
-        
+
         $funnyComments = [
             'fun' => [
                 "🎮 Game Over! Your code review is ready!",
@@ -561,14 +561,14 @@ $mcp->tool('review-code', [
                 "🔍 Review finished"
             ]
         ];
-        
+
         return [
             'message' => $funnyComments[$args['style']][array_rand($funnyComments[$args['style']])],
             'complexity' => $complexity,
             'suggestions' => $suggestions,
             'history_uri' => "reviews://{$fileHash}"
         ];
-        
+
     } catch (\Exception $e) {
         MCP::sendLog("Review error: {$e->getMessage()}", 'error', 'reviewer');
         return ['error' => "Oops! The code reviewer needs coffee! ({$e->getMessage()})"];
@@ -590,7 +590,7 @@ $result = $mcp->call('review-code', [
 // Output might include fun messages like:
 // "🎮 Game Over! Your code review is ready!"
 // With suggestions about using memoization for better performance
-// and adding parameter validation! 
+// and adding parameter validation!
 ```
 
 This example demonstrates:
@@ -620,4 +620,4 @@ If you discover any security related issues, please email mohamedabdelmenem01@gm
 
 ## License
 
-The MIT License (MIT). Please see [License File](LICENSE.md) for more information. 
+The MIT License (MIT). Please see [License File](LICENSE.md) for more information.

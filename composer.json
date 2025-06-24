@@ -21,10 +21,10 @@
         }
     ],
     "require": {
-        "php": "^8.1",
+        "php": "^8.2",
         "cboden/ratchet": "^0.4.4",
         "guzzlehttp/guzzle": "^7.0",
-        "illuminate/support": "^10.0",
+        "illuminate/support": "^10.0|^11.0|^12.0",
         "ratchet/pawl": "^0.4.3",
         "react/http": "^1.9",
         "react/socket": "^1.12"
@@ -32,10 +32,10 @@
     "require-dev": {
         "friendsofphp/php-cs-fixer": "^3.49",
         "mockery/mockery": "^1.6",
-        "orchestra/testbench": "^8.0",
+        "orchestra/testbench": "^8.0|^9.0|^10.0",
         "phpstan/phpstan": "^1.10",
         "phpstan/phpstan-mockery": "^1.1",
-        "phpunit/phpunit": "^10.0",
+        "phpunit/phpunit": "^10.0|^11.0",
         "nette/php-generator": "^4.1",
         "squizlabs/php_codesniffer": "^3.8"
     },

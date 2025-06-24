@@ -12,8 +12,8 @@ jobs:
 
     strategy:
       matrix:
-        php: [8.1, 8.2, 8.3]
-        laravel: [10.*]
+        php: [8.2, 8.3]
+        laravel: [10.*, 11.*, 12.*]
 
     steps:
     - uses: actions/checkout@v4
@@ -26,7 +26,9 @@ jobs:
         coverage: xdebug
 
     - name: Install Dependencies
-      run: composer install --prefer-dist --no-progress
+      run: |
+        composer require "illuminate/support:${{ matrix.laravel }}" --no-update
+        composer install --prefer-dist --no-progress
 
     - name: Check Code Style
       run: |
@@ -45,4 +47,4 @@ jobs:
         token: ${{ secrets.CODECOV_TOKEN }}
         files: ./coverage.xml
         fail_ci_if_error: false # Set to true once coverage is stable
-        verbose: true 
+        verbose: true
