@@ -28,10 +28,12 @@ A Laravel package for implementing the Model Context Protocol (MCP) in Laravel a
 ## Features
 
 - **Multiple Transport Options**
-  - HTTP Transport (RESTful API)
-  - WebSocket Transport (Real-time)
-  - Stdio Transport (Command-line)
+  - HTTP Transport (RESTful API) ✅
+  - WebSocket Transport (Real-time) ⚠️ [See WebSocket Guide](WEBSOCKET.md)
+  - Stdio Transport (Command-line) ✅
   - Configurable host and port settings
+
+> **Note**: WebSocket transport requires additional setup for Laravel 12 compatibility. See [WEBSOCKET.md](WEBSOCKET.md) for details.
 
 - **Server Capabilities**
   - Tool registration and execution

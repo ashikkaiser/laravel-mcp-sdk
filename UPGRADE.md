@@ -9,6 +9,27 @@ Before upgrading, ensure you have:
 - Composer 2.x
 - Laravel 10.x, 11.x, or 12.x
 
+## Important Notice: WebSocket Transport
+
+Due to Symfony dependency conflicts between Laravel 12 and Ratchet WebSocket library, the WebSocket transport is now **optional**.
+
+### WebSocket Options for Laravel 12:
+
+1. **Laravel Reverb (Recommended for Laravel 11+)**:
+   ```bash
+   composer require laravel/reverb
+   ```
+
+2. **ReactPHP WebSocket (Alternative)**:
+   ```bash
+   composer require react/socket react/http
+   ```
+
+3. **Legacy Ratchet (Laravel 10.x only)**:
+   ```bash
+   composer require cboden/ratchet ratchet/pawl
+   ```
+
 ## Step-by-Step Upgrade
 
 ### 1. Update PHP Version

@@ -17,7 +17,7 @@ use RuntimeException;
  *
  * Supported transports:
  * - HTTP
- * - WebSocket
+ * - WebSocket (Laravel Reverb)
  * - Standard I/O
  *
  * @package LaravelMCP\MCP\Transport
@@ -42,7 +42,7 @@ class TransportFactory
     {
         return match ($type) {
             'http' => new HttpTransport($server, $config),
-            'websocket' => new WebSocketTransport($loop, $server, $config),
+            'websocket', 'reverb' => new WebSocketTransport($config),
             'stdio' => new StdioTransport($server),
             default => throw new RuntimeException("Unsupported transport type: {$type}"),
         };

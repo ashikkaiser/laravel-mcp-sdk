@@ -3,6 +3,7 @@
 namespace LaravelMCP\MCP;
 
 use Illuminate\Support\ServiceProvider;
+use LaravelMCP\MCP\Commands\MCPReverbCommand;
 use LaravelMCP\MCP\Commands\MCPServerCommand;
 use LaravelMCP\MCP\Contracts\MCPServerInterface;
 use LaravelMCP\MCP\Server\FastMCP;
@@ -88,6 +89,7 @@ class MCPServiceProvider extends ServiceProvider
 
             $this->commands([
                 MCPServerCommand::class,
+                MCPReverbCommand::class,
             ]);
         }
     }

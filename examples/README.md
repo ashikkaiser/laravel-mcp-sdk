@@ -35,17 +35,95 @@ To run (in a separate terminal):
 php http_client.php
 ```
 
-### 2. WebSocket Transport Example
+# MCP Examples
 
-Real-time bidirectional communication with progress updates and streaming.
+This directory contains example implementations of the Laravel MCP package, demonstrating different transport methods and use cases.
+
+## Prerequisites
+
+Before running the examples, make sure you have:
+1. PHP 8.2 or higher installed
+2. Composer dependencies installed (`composer install`)
+3. Terminal access to run PHP scripts
+
+### WebSocket Transport Requirements
+
+For WebSocket examples, you'll need one of the following:
+
+**Laravel Reverb (Recommended for Laravel 11+):**
+```bash
+composer require laravel/reverb
+php artisan reverb:install
+```
+
+**Legacy Ratchet (Laravel 10.x only):**
+```bash
+composer require cboden/ratchet ratchet/pawl
+```
+
+## Examples Overview
+
+### 1. HTTP Transport Example
+
+Basic request/response communication using HTTP transport.
+
+#### Server (`http_server.php`)
+- Implements a simple MCP server
+- Handles tool calls, resource requests, and prompts
+- Uses HTTP transport on port 8080
+
+To run:
+```bash
+php http_server.php
+```
+
+#### Client (`http_client.php`)
+- Demonstrates making requests to the HTTP server
+- Shows error handling
+- Includes examples of all request types
+
+To run (in a separate terminal):
+```bash
+php http_client.php
+```
+
+### 2. WebSocket Transport Example (Laravel Reverb)
+
+Real-time bidirectional communication using Laravel Reverb.
+
+#### Server (`reverb_websocket_server.php`)
+- Modern WebSocket implementation using Laravel Reverb
+- Compatible with Laravel 12
+- Real-time broadcasting capabilities
+- Channel-based messaging
+
+To run:
+```bash
+php reverb_websocket_server.php
+```
+
+#### Client (`reverb_websocket_client.php`)
+- HTML/JavaScript client example
+- WebSocket connection management
+- Real-time message handling
+
+To run:
+```bash
+php reverb_websocket_client.php
+```
+
+### 3. WebSocket Transport Example (Legacy)
+
+Real-time bidirectional communication with progress updates and streaming using Ratchet (Laravel 10.x only).
 
 #### Server (`websocket_server.php`)
-- Implements a real-time MCP server
+- Legacy WebSocket implementation using Ratchet
+- Only compatible with Laravel 10.x
 - Demonstrates progress updates and streaming
 - Manages client connections
 - Simulates long-running tasks
 
-To run:
+To run (Laravel 10.x only):
 ```bash
 php websocket_server.php
 ```
