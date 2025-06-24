@@ -1,5 +1,5 @@
 {
-    "name": "laravelmcp/mcp",
+    "name": "ashikkaiser/laravelmcp",
     "description": "Laravel implementation of the Model Context Protocol (MCP) SDK",
     "type": "library",
     "license": "MIT",
@@ -9,15 +9,19 @@
         "model-context-protocol",
         "sdk"
     ],
-    "homepage": "https://github.com/laravelmcp/mcp",
+    "homepage": "https://github.com/ashikkaiser/laravel-mcp-sdk",
     "support": {
-        "issues": "https://github.com/laravelmcp/mcp/issues",
-        "source": "https://github.com/laravelmcp/mcp"
+        "issues": "https://github.com/ashikkaiser/laravel-mcp-sdk/issues",
+        "source": "https://github.com/ashikkaiser/laravel-mcp-sdk"
     },
     "authors": [
         {
             "name": "Mohamed Abdelmenem",
             "email": "mohamedabdelmenem01@gmail.com"
+        },
+        {
+            "name": "Ashik Kaiser",
+            "email": "ashikkaiser@gmail.com"
         }
     ],
     "require": {
